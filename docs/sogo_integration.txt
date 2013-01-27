@@ -1,0 +1,11 @@
+SOGo integration
+================
+
+CLWMail has simple authentication support for SOGo, based on an SQL
+view which allows central authentical for SOGo calendars and contacts.
+
+For more information about the open source SOGo groupware solution
+please see http://www.sogo.nu/english.html or contact the team at
+Inverse for more details.
+
+An example configuration file is included at ../clwmail/sogo/

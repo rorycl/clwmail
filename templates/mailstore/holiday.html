@@ -1,0 +1,361 @@
+{% extends thistemplate %}
+{% load modulo %}
+{% load numdigits %}
+{% block pagetitle %}CLW Mail Holiday{% endblock %}
+{% block js %}onload ="MPLoadDefaults({% ifequal mode "add" %}'add_form'{%else %}'edit_form'{% endifequal %})"{% endblock %}
+{% block content %}
+
+{% if session_user.b_isadmin %}
+	<h1>CLWMail - Mail System</h1>
+
+	<h2>Welcome to {{ detailed_user.fullname }}'s profile <a href="{{ urlrel }}admin/user/manage/">[return to user management]</a></h2>
+
+{% else %}
+	<h1>CLWMail - Mail System</h1>
+
+	<h2>Welcome {{ detailed_user.fullname }} <a href="{{ urlrel }}auth/logout/">[logout]</a></h2>
+{% endif %}
+
+<div id="content">
+	{% ifnotequal  detailed_user.status 9 %}
+		<div id="holiday-head">
+			Your holiday message is currently :
+			{% ifequal detailed_user.status 1%}
+				OFF
+				</div>
+			{% else %}
+				{% ifequal detailed_user.status 2 %}
+					ON
+					</div>
+					<h4>Your current message is :</h4> {{ current_holiday.message|default_if_none:"There is no current message."|linebreaks }}
+
+					<div class="right">
+						<a href="{{ urlrel }}mailstore/user/{{ detailed_user.userid }}/domain/{{ detailed_user.domain }}/leave/off/">
+							<img value="Turn off leave" src="{{ urlmedia }}images/leaveoff.png" alt="turn off leave" />
+						</a>
+					</div>
+					<div class="clear"></div>
+					<div class="grey-line"></div>
+				{% endifequal %}
+
+			{% endifequal %}
+
+
+		{% ifequal mode 'edit'%}
+			<h4>Change your holiday message</h4>
+			<form id ="edit_form" action="{{ urlrel }}mailstore/user/{{ detailed_user.userid }}/domain/{{ detailed_user.domain }}/holiday/{{ holiday.holid }}/edit/" onsubmit ="MPClearAll('add_form')" method="post">
+				{% if form.errors or dberror %}
+					<div class="row">
+						{% if form.errors %}
+							<span class="error">Errors have occurred. Please see below.</span>
+						{% else %}
+							<span class="error">{{ dberror }}</span>
+						{% endif %}
+					</div>
+				{% endif %}
+
+				{% if form.hstart_date.errors %}
+					<div class="row">
+						<span class="label">
+							&nbsp; 
+						</span>
+						<span class="field">
+							{{ form.hstart_date.errors }}
+						</span>
+					</div>
+				{% endif %}
+				 
+				<div class="row">
+					<span class="label">
+						from 
+					</span>
+					<span class="field">
+						<input readonly="readonly" type="text" class="day-month" size="3" name="hs_day" value={% if new_data.hs_day %}
+																													"{{ new_data.hs_day }}"
+																											   {% else %}
+																													"{{ holiday.holstart.day|numdigits:2 }}"
+																												{% endif %}/>
+						<input readonly="readonly" type="text" class="day-month" size="3" name="hs_month" value={% if new_data.hs_month %}
+																													"{{ new_data.hs_month }}"
+																												  {% else %}
+																													"{{ holiday.holstart.month|numdigits:2 }}"
+																												{% endif %}/>
+
+						<input readonly="readonly" type="text" class="year" size="5" name="hs_year" value={% if new_data.hs_year %}
+																												"{{ new_data.hs_year }}"
+																											{% else %}
+																												"{{ holiday.holstart.year|numdigits:2 }}"
+																												{% endif %}/>
+						&nbsp;&nbsp;
+						<input type="text" class="day-month" size="3" name="hs_hour" value={% if new_data.hs_hour %}
+																								"{{ new_data.hs_hour }}"
+																						   {% else %}
+																								 "{{ holiday.holstart.hour|numdigits:2 }}"
+																							{% endif %}/>
+
+						<input type="text" class="day-month" size="3" name="hs_min" value={% if new_data.hs_min %}
+																							"{{ new_data.hs_min }}"
+																						  {% else %}
+																						   "{{ holiday.holstart.minute|numdigits:2 }}"
+																						  {% endif %}/>
+
+						
+						&nbsp;
+						<a id="starta" name="starta"><img id ="startimg" class= "calimg" onclick ="createCalendar('startcal','setStartDate','starta')" src= "{{ urlmedia }}images/calendar.png" alt ="cal"/></a>
+					</span>
+				</div>
+				<div id="startcal">
+				</div>
+
+				{% if form.hend_date.errors %}
+					<div class="row">
+						<span class="label">
+							&nbsp; 
+						</span>
+						<span class="field">
+							{{ form.hend_date.errors }}
+						</span>
+					</div>
+				{% endif %}
+				 
+				<div class="row">
+					<span class="label">
+						to 
+					</span>
+					<span class="field">
+						<input readonly="readonly" type="text" class="day-month" size="3" name="he_day" value={% if new_data.he_day %}
+																													"{{ new_data.he_day }}"
+																											   {% else %}
+																													"{{ holiday.holend.day|numdigits:2 }}"
+																												{% endif %}/>
+						<input readonly="readonly" type="text" class="day-month" size="3" name="he_month" value={% if new_data.he_month %}
+																													"{{ new_data.he_month }}"
+																												  {% else %}
+																													"{{ holiday.holend.month|numdigits:2  }}"
+																												{% endif %}/>
+
+						<input readonly="readonly" type="text" class="year" size="5" name="he_year" value={% if new_data.he_year %}
+																												"{{ new_data.he_year }}"
+																											{% else %}
+																												"{{ holiday.holend.year|numdigits:2 }}"
+																												{% endif %}/>
+						&nbsp;&nbsp;
+						<input type="text" class="day-month" size="3" name="he_hour" value={% if new_data.he_hour %}
+																													"{{ new_data.he_hour }}"
+																												 {% else %}
+																													"{{ holiday.holend.hour|numdigits:2 }}"
+																												{% endif %}/>
+
+						<input type="text" class="day-month" size="3" name="he_min" value={% if new_data.he_min%}
+																												"{{ new_data.he_min }}"
+																											 {% else %}
+																												"{{ holiday.holend.minute|numdigits:2 }}"
+																											{% endif %}/>
+
+
+						&nbsp;
+						<a id="enda" name="enda"><img id ="endimg" class= "calimg" onclick ="createCalendar('endcal','setEndDate', 'enda')" src= "{{ urlmedia }}images/calendar.png" alt ="cal"/></a> 
+					</span>
+				</div>
+				<div id ="endcal">
+				</div>
+
+
+				{% if form.message.errors %}
+					<div class="row">
+						<span class="label">
+							&nbsp; 
+						</span>
+						<span class="field">
+							{{ form.message.errors }}
+						</span>
+					</div>
+				{% endif %}
+
+				<div class="row">
+					<span class="label">
+						message
+					</span>
+					<span class="field">
+							<textarea cols="50" rows="9" name="message">{% if new_data %}{{ new_data.message }}{% else %}{{ holiday.holmsg }}{% endif %}</textarea>
+							<br/>
+							<input class ="noindents" type = "checkbox" name ="b_default" {% if new_data %}
+																							{% if new_data.b_default %}
+																								checked = "true"
+																							{% endif %}
+																						  {% else %}
+																								{% ifequal defaultmsg holiday.holmsg %} 
+																									checked = "true"
+																								{% endifequal %}
+																						  {% endif %}/><span class ="bold">set default</span>
+					</span>
+				</div>
+
+
+				<div class="row">
+					<span class="label">&nbsp;</span>
+					<span class="field">
+						<a href ="{{ urlrel }}mailstore/user/{{ detailed_user.userid }}/domain/{{ detailed_user.domain }}/holiday/">
+							<img value="cancel" src="{{ urlmedia }}images/cancel.png" alt="cancel edit holiday"/></a>
+						<input type="image" name="save_holiday" value="save" src="{{ urlmedia }}images/save.png" alt="save holiday"/>
+					</span>
+				</div>
+				<div class ="clear"></div>
+		</form>
+		{% else %}
+			<h4>Make a new holiday message</h4>
+			<form id ="add_form" onsubmit ="MPClearAll('add_form')" action="{{ urlrel }}mailstore/user/{{ detailed_user.userid }}/domain/{{ detailed_user.domain }}/holiday/add/" method="post">
+				{% if form.errors or dberror %}
+					<div class="row">
+						{% if form.errors %}
+							<span class="error">Errors have occurred. Please see below.</span>
+						{% else %}
+							<span class="error">{{ dberror }}</span>
+						{% endif %}
+					</div>
+				{% endif %}
+
+				{% if form.hstart_date.errors %}
+					<div class="row">
+						<span class="label">
+							&nbsp; 
+						</span>
+						<span class="field">
+							{{ form.hstart_date.errors }}
+						</span>
+					</div>
+				{% endif %}
+				 
+				<div class="row">
+					<span class="label">
+						from 
+					</span>
+					<span class="field">
+						<input   type="text" class="day-month" size="3" name="hs_day" value="{{ new_data.hs_day }}" readonly="readonly" />
+						<input   type="text" class="day-month" size="3" name="hs_month" value="{{ new_data.hs_month }}" readonly="readonly"/>
+						<input   type="text" class="year" size="5" name="hs_year" value="{{ new_data.hs_year }}" readonly="readonly"/>
+						&nbsp;&nbsp;
+						<input  type="text" class="day-month" size="3" name="hs_hour" value="{% if new_data %}{{ new_data.hs_hour }}{% else %}09{% endif %}"/>:
+						<input  type="text" class="day-month" size="3" name="hs_min" value="{% if new_data %}{{ new_data.hs_min }}{% else %}00{% endif %}" />
+						&nbsp; 
+						<a id="starta" name="starta"><img id ="startimg" class= "calimg" onclick ="createCalendar('startcal','setStartDate','starta')" src= "{{ urlmedia }}images/calendar.png" alt ="cal"/></a>
+						&nbsp;&nbsp;
+					</span>
+				</div>
+				<div id="startcal">
+				</div>
+				{% if form.hend_date.errors %}
+					<div class="row">
+						<span class="label">
+							&nbsp; 
+						</span>
+						<span class="field">
+							{{ form.hend_date.errors }}
+						</span>
+					</div>
+				{% endif %}
+
+				<div class="row">
+					<span class="label">
+						to
+					</span>
+					<span class="field">
+						<input type="text" class="day-month" size="3" name="he_day" value="{{ new_data.he_day }}" readonly="readonly"/>
+						<input type="text" class="day-month" size="3" name="he_month" value="{{ new_data.he_month }}" readonly="readonly"/>
+						<input type="text" class="year" size="5" name="he_year" value="{{ new_data.he_year }}" readonly="readonly"/>
+						&nbsp;&nbsp;
+						<input type="text" class="day-month" size="3" name="he_hour" value="{% if new_data %}{{ new_data.he_hour }}{% else %}09{% endif %}"/>:
+						<input type="text" class="day-month" size="3" name="he_min" value="{% if new_data %}{{ new_data.he_min }}{% else %}00{% endif %}"/>
+						&nbsp;
+						<a id="enda" name="enda"><img id ="endimg" class= "calimg" onclick ="createCalendar('endcal','setEndDate', 'enda')" src= "{{ urlmedia }}images/calendar.png" alt ="cal"/></a> 
+					</span>
+				</div>
+
+				<div id="endcal">
+				</div>
+
+				{% if form.message.errors %}
+					<div class="row">
+						<span class="label">
+							&nbsp; 
+						</span>
+						<span class="field">
+							{{ form.message.errors }}
+						</span>
+					</div>
+				{% endif %}
+
+				<div class="row">
+					<span class="label">
+						message
+					</span>
+					<span class="field">
+							<textarea cols="50" rows="9" name="message">{% if new_data %}{{ new_data.message }}{% else %}{{ defaultmsg|default_if_none:"" }}{% endif %}</textarea>
+							<br/>
+							<input class ="noindents" type = "checkbox" name ="b_default" {% if new_data and new_data.b_default %}checked = "true"{% endif %}/><span class ="bold">set default</span>
+					</span>
+				</div>
+
+				<div class="row">
+					<span class="label">&nbsp;</span>
+					<span class="field">
+						<input  type="image" name="save_holiday" value="save" src="{{ urlmedia }}images/save.png" alt="save holiday"/>
+					</span>
+				</div>
+
+				<div class ="clear"></div>
+		</form>
+		{% endifequal %}
+		
+
+		<div class="grey-line"></div>
+
+		{% if holiday_messages %}
+			<h4>Current holiday messages</h4>
+
+			<table id ="holidaymsgs" cellspacing="0" cellpadding="2">
+				<thead>
+					<tr class="tr-hol-head">
+						<th>Start</th>
+						<th>End</th>
+						<th>Message</th>
+						<th>&nbsp;</th>
+						<th>&nbsp;</th>
+					</tr>
+				</thead>
+				<tbody>
+				{% for holiday in holiday_messages %}
+					<tr class="{% if forloop.counter|modulo:2 %}row-a{% else %}row-b{% endif %}">
+
+						<td class="td-date">
+							{{ holiday.holstart|date:"d/m/Y" }} <br />
+							at  {{ holiday.holstart|date:"H:i"}}
+						</td>
+						<td class="td-date">
+							{{ holiday.holend|date:"d/m/Y" }} <br />
+							at {{ holiday.holend|date:"H:i" }}
+						</td>
+						<td class="td-msg">{{ holiday.holmsg }}</td>
+						<td class="td-button">
+							<a href="{{ urlrel }}mailstore/user/{{ detailed_user.userid }}/domain/{{ detailed_user.domain }}/holiday/{{ holiday.holid }}/edit/"><img src="{{ urlmedia }}images/edit.png" alt="edit leave"/></a>
+						</td>
+						<td class="td-button">
+							<a href="{{ urlrel }}mailstore/user/{{ detailed_user.userid }}/domain/{{ detailed_user.domain }}/holiday/{{ holiday.holid }}/delete/">
+								<img onClick="return confirmAction('delete','message');" src="{{ urlmedia }}images/delete.png" alt="delete leave"/></a>
+						</td>
+					</tr>
+				 {% endfor %}
+
+				</tbody>
+			</table>
+		{% else %}
+			<h4>There are no upcoming holiday messages to display</h4>
+		{% endif %}
+	{% else %}
+		<h4>{{ detailed_user.fullname }}'s account is disabled. Please contact your administrator.</h4> 
+	{% endifnotequal %}
+</div>
+
+{% endblock %}
+
+<!--img id ="startimg" class= "calimg" onclick ="displayCalendarBox(document.forms[0].hs_year,document.forms[0].hs_month,document.forms[0].hs_day,document.forms[0].hs_hour,document.forms[0].hs_min,this)" src= "{{ urlmedia }}images/calendar.png" alt ="cal"/-->

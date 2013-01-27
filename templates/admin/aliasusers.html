@@ -1,0 +1,34 @@
+{% load append %}
+{% load list_contains %}
+{% if is_domain %}
+	<span class="label">
+		{{ domain_users.domainname }} 
+	</span>
+	<span class="field">
+		{% if domain_users.users %}
+			<ul class ="aliasusers">
+			{% for user in domain_users.users %}	
+				{% if new_data %}
+					{% if user.userid|append:"@"|append:domain_users.domainname|contained_list:new_data.users %}
+						<li><input checked = "true" type ="checkbox" name ="users" value="{{ user.userid }}@{{ domain_users.domainname }}"/>{{ user.userid }}</li>
+					{% else %}	
+						<li><input type ="checkbox" name ="users" value="{{ user.userid }}@{{ domain_users.domainname }}"/>{{ user.userid }}</li>
+					{% endif %}
+				{% else %}
+					{% if requestusers %}
+						{% if user.userid|append:"@"|append:domain_users.domainname|contained_list:requestusers %}
+							<li><input checked = "true" type ="checkbox" name ="users" value="{{ user.userid }}@{{ domain_users.domainname }}"/>{{ user.userid }}</li>
+						{% else %}	
+							<li><input type ="checkbox" name ="users" value="{{ user.userid }}@{{ domain_users.domainname }}"/>{{ user.userid }}</li>
+						{% endif %}
+					{% else %}
+							<li><input type ="checkbox" name ="users" value="{{ user.userid }}@{{ domain_users.domainname }}"/>{{ user.userid }}</li>
+					{% endif %}
+				{% endif %}
+			{% endfor %}
+			</ul>
+		{% else %}
+			<span class ="nousers">No users available</span>
+		{% endif %}
+	</span>
+{% endif %}

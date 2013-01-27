@@ -1,0 +1,64 @@
+Exim integration
+================
+
+CLWMail can be integrated into Exim in various ways. The example files
+shown in ../clwmail/exim/ fit into the Debian separated configuration
+file which (in this example) has the following files. The ones included
+in ../clwmail/exim are starred 
+
+	./
+	├── acl
+	│   ├── 00_exim4-config_header
+	│   ├── 20_exim4-config_local_deny_exceptions
+	│   ├── 30_exim4-config_check_mail
+	│   ├── 30_exim4-config_check_rcpt
+	│   ├── 40_exim4-config_check_data
+	│   ├── 41_exim4-config_check_data_clw
+	│   └── 42_exim4-config_end_data_clw
+	├── auth
+	│   ├── 00_exim4-config_header
+	│   ├── 30_exim4-config_examples *
+	│   └── 40_exim4-config_clw *
+	├── main
+	│   ├── 01_exim4-config_listmacrosdefs
+	│   ├── 025_exim4-config_clw_main *
+	│   ├── 02_exim4-config_options
+	│   ├── 03_exim4-config_tlsoptions
+	│   └── 90_exim4-config_log_selector
+	├── retry
+	│   ├── 00_exim4-config_header
+	│   └── 30_exim4-config
+	├── rewrite
+	│   ├── 00_exim4-config_header
+	│   └── 31_exim4-config_rewriting
+	├── router
+	│   ├── 00_exim4-config_header
+	│   ├── 100_exim4-config_domain_literal
+	│   ├── 150_exim4-config_hubbed_hosts
+	│   ├── 180_exim4-config_copies_clw
+	│   ├── 200_exim4-config_primary
+	│   ├── 300_exim4-config_real_local
+	│   ├── 400_exim4-config_system_aliases
+	│   ├── 450_exim4-config_clw *
+	│   ├── 500_exim4-config_hubuser
+	│   ├── 600_exim4-config_userforward
+	│   ├── 700_exim4-config_procmail
+	│   ├── 800_exim4-config_maildrop
+	│   ├── 850_exim4-config_lowuid
+	│   ├── 900_exim4-config_local_user
+	│   └── mmm_mail4root
+	└── transport
+		├── 00_exim4-config_header
+		├── 10_exim4-config_transport-macros
+		├── 24_exim4-config_clw *
+		├── 30_exim4-config_address_file
+		├── 30_exim4-config_address_pipe
+		├── 30_exim4-config_address_reply
+		├── 30_exim4-config_maildir_home
+		├── 30_exim4-config_maildrop_pipe
+		├── 30_exim4-config_mail_spool
+		├── 30_exim4-config_procmail_pipe
+		├── 30_exim4-config_remote_smtp
+		├── 30_exim4-config_remote_smtp_smarthost
+		└── 35_exim4-config_address_directory
+

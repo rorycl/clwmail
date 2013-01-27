@@ -1,0 +1,189 @@
+{% extends thistemplate %}
+{% load modulo %}
+{% load range %}
+{% block pagetitle %}CLW Mail Domain Manage{% endblock %}
+{% block js %}{% endblock %}
+{% block contentbody %}
+	{% ifequal mode 'add' %}
+		<h3 class="heading">Add a Domain</h3>
+
+		<form id="adddomainform" name="add-domain" action="{{ urlrel }}admin/domain/add/" method="post">
+			<p>
+					Please contact Campbell-Lange Workshop to finalize the
+					<b>creation</b> of this domain.
+			</p>
+
+			{% if form.errors or dberror %}
+				<div class="row">
+					{% if form.errors %}
+						<span class="error">Errors have occurred. Please see below.</span>
+					{% else %}
+						<span class="error">{{ dberror }}</span>
+					{% endif %}
+				</div>
+			{% endif %}
+
+			{% if form.domain.errors %}
+				<div class="row">
+					<span class="label">
+						&nbsp; 
+					</span>
+					<span class="field">
+						{{ form.domain.errors }}
+					</span>
+				</div>
+			{% endif %}
+			 
+			<div class="row">
+				<span class="label">
+					domain name 
+				</span>
+				<span class="field">
+					<input class="long"  type="text"  name="domain" value="{% if new_data.domain  %}{{ new_data.domain }}{% endif%}"/>
+				</span>
+			</div>
+
+			<div class="row">
+				<span class="label">
+					&nbsp; 
+				</span>
+				<span class="field">
+					<input type="image" name="save" src="{{ urlmedia }}images/save.png" alt="save domain"/>
+				</span>
+			</div>
+
+		
+			<div class="clear"></div>
+	</form>
+
+	{% else %}
+
+		{% ifequal mode 'edit' %}
+			<h3 class="heading">Edit Domain {{ requestdomain.domainname }}</h3>
+
+			<form id="editdomainform" name="edit-domain" action="{{ urlrel }}admin/domain/{{ requestdomain.domainname }}/edit/" method="post">
+			<p>
+					Please contact Campbell-Lange Workshop to finalize the
+					<b>editing</b> of this domain.
+			</p>
+
+				{% if form.errors or dberror %}
+					<div class="row">
+						{% if form.errors %}
+							<span class="error">Errors have occurred. Please see below.</span>
+						{% else %}
+							<span class="error">{{ dberror }}</span>
+						{% endif %}
+					</div>
+				{% endif %}
+
+				{% if form.domain.errors %}
+					<div class="row">
+						<span class="label">
+							&nbsp; 
+						</span>
+						<span class="field">
+							{{ form.domain.errors }}
+						</span>
+					</div>
+				{% endif %}
+				 
+				<div class="row">
+					<span class="label">
+						domain name 
+					</span>
+					<span class="field">
+						<input class="long"  type="text"  name="domain" value="{% if new_data.domain  %}{{ new_data.domain }}{% else %}{{ requestdomain.domainname }}{% endif %}"/>
+					</span>
+				</div>
+
+				<div class="row">
+					<span class="label">
+						&nbsp; 
+					</span>
+					<span class="field">
+						<input type="image" name="save" src="{{ urlmedia }}images/save.png" alt="save domain"/>
+					</span>
+				</div>
+
+			
+				<div class="clear"></div>
+		</form>
+
+		{% endifequal %}
+	{% endifequal %}
+
+	{% if domains %}
+		<h3 class="heading">Current Domains</h3>
+
+		<div class="pagertop">
+			{% if collection.has_prev %}
+				<a class="pageselectors" href="{{ urlrel }}admin/domain/manage/page/{{ collection.prev_page }}/" >&laquo</a> 
+			{% endif %}
+				Page {{ collection.current_page }} of {{ collection.num_pages }}
+			{% if collection.has_next %}
+				<a class="pageselectors" href="{{ urlrel }}admin/domain/manage/page/{{ collection.next_page }}/">&raquo</a>
+			{% endif %}
+		</div>
+
+		{% if deleteerror %}
+			<span id="deleteerror">{{ deleteerror }}</span>
+		{% endif %}
+
+		<table id="domainlist" cellspacing="0">
+			<thead>
+				<tr>
+					<th class="first domain">Name</th>
+					<th class="button">&nbsp;</th>
+					<th class="button">&nbsp;</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for domain in domains %}
+					<tr class="{% if forloop.counter|modulo:2 %}row-a{% else %}row-b{% endif %}">
+						
+						<td class="first domain">
+							{{ domain.domainname }}	
+						</td>
+
+						<td class="button">
+							<a href="{{ urlrel }}admin/domain/{{ domain.domainname }}/edit/">
+								<img src="{{ urlmedia }}images/edit.png" alt="edit"/>
+							</a>
+						</td>
+
+						<td class="button">
+							<a href="{{ urlrel }}admin/domain/{{ domain.domainname }}/delete/">
+								<img onClick="return confirmAction('delete','domain');" src="{{ urlmedia }}images/delete.png" alt="delete"/>
+							</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<div class="pagerbottom" style="{% if collection.bottom_pager %}display:block;{% else %}display:none;{% endif %}" >
+			{% if collection.has_prev %}
+				<a class="pageselectors" href="{{ urlrel }}admin/domain/manage/page/{{ collection.prev_page }}/" >&laquo</a> 
+			{% endif %}
+				Page {{ collection.current_page }} of {{ collection.num_pages }}
+			{% if collection.has_next %}
+				<a class="pageselectors" href="{{ urlrel }}admin/domain/manage/page/{{ collection.next_page }}/">&raquo</a>
+			{% endif %}
+		</div>
+
+		<div class="pages"> 
+			{% for page in collection.page_range %}
+				{% ifequal page collection.current_page %}
+					<span class="current-page">{{ page }}</span>
+				{% else %}
+					<a href="{{ urlrel }}admin/domain/manage/page/{{ page }}/">{{ page }}</a>
+				{% endifequal %}
+			{% endfor %}
+		</div>
+
+		<div class="clear"></div>
+				
+{% endif %}
+	
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends thistemplate %}
+{% block pagetitle %}CLW Mail Login{% endblock %}
+{% block content %}
+
+<h1>CLWMail - Mail System</h1>
+<h2>Login with your user details</h2>
+
+<div id="login-content">
+	<form action="{{ urlrel }}auth/login/" method="post">
+
+		{% if loginerror %}
+		<div class="row">
+			<span class="error">{{ loginerror }}</span>
+		</div>
+		{% endif%}
+
+		{% if form.username.errors %}
+			<div class="row">
+				<span class="label">&nbsp;</span>
+				<span class="field">{{ form.username.errors }}</span>
+			</div>
+		{% endif %}
+
+		<div class="row">
+			<span class="label">username</span>
+			<span class="field">
+				<input class ="long" type="text" name="username" value="{{ new_data.username }}" />
+				<span class="info">&nbsp;&nbsp;(username@domain)</span>
+			</span>
+		</div>
+
+		{% if form.password.errors %}
+			<div class="row">
+				<span class="label">&nbsp;</span>
+				<span class="field">{{ form.password.errors }}</span>
+			</div>
+		{% endif %}
+
+		<div class="row">
+			<span class="label">password</span>
+			<span class="field">
+				<input class ="long" type="password" name="password" value="" /> 
+			</span>
+		</div>
+
+		<div class="row">
+			<span class="label">&nbsp;</span>
+			<span class="field">
+				<input type="image" name="login" value="login" src="{{ urlmedia }}images/login.png" alt="login" />
+			</span>
+		</div>
+
+    <div class="clear"></div>
+
+</form>
+</div>
+
+{% endblock %}

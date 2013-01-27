@@ -1,0 +1,645 @@
+/** MAIN STRUCTURE *******************************************/
+body {
+	margin: 0;
+	color: #000;
+	background-color: #CCB384;
+	font-family:  "Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size : 12px;
+	text-align:center;
+}
+
+#container {
+	width : 800px;
+	margin : 25px auto;
+	text-align : left;
+	padding-top : 15px;
+	padding-bottom : 15px;
+	background : #fff;
+}
+
+#content {
+	margin : 25px;
+}
+
+#login-content {
+	width : 550px;
+	padding-top : 50px;
+	padding-bottom : 50px;
+	margin-left :175px;
+}
+
+#login-content .row {
+	margin-bottom: 0;
+	padding-top: 0.5em;
+	clear: both;
+	float: left;
+	width: 550px;
+	/*border : solid red 1px;*/
+}
+
+
+#login-content .row .label {
+	float: left;
+	margin-right: 15px;
+	padding-top: 0.1em;
+	width: 100px;
+	text-align: right;
+	font-weight: bold;
+	background: #fff; /* Without this Win IE puts extra space between rows. Weird. */
+}
+
+#login-content .row .field {
+	float: left;
+	width: 400px;
+}
+
+#login-content .row .field input {
+	font-size : 1.0em;
+	color : #000;
+
+}
+#login-content .row .field input.long {
+	width:200px;
+}
+/** UNIVERSAL ELEMENTS ***************************************/
+
+a {
+	color:#9F4040;
+}
+
+select {
+	font-size : 12px;
+}
+
+.bold {
+	font-weight:bold
+}
+
+.noindents {
+	margin-left:0px;
+	padding-left:0px;
+	display:inline;
+}
+
+ul.errorlist {
+	padding:0px;
+	margin:0px;
+	color:red;
+	list-style:none;
+	float:left;
+}
+ul.errorlist li {
+	padding:0px;
+	margin:0px;
+	display:inline;
+	float:left;
+}
+
+div.clear {
+	clear: both;
+	height: 1px;
+	line-height: 0;
+	font-size: 0;
+}
+
+div.right {
+	float : right;
+}
+
+span.info {
+	font-weight : normal;
+	color : #999;
+	font-size : 0.95em;
+}
+
+span.error {
+	font-weight : normal;
+	color : red;
+	font-size : 1.0em;
+}
+
+.grey-line {
+	height : 0px;
+	border-bottom : 1px solid #999;
+	margin-top : 10px;
+	margin-bottom : 10px;
+	line-height:0px;
+}
+
+h1 {
+	font-size : 1.5em;
+	margin-left : 25px;
+}
+
+h2 {
+	font-size : 1.1em;
+	margin-left : 25px;
+	color : #999;	
+}
+
+#holiday-head {
+	background : #9F4040;
+	color : #fff;
+	padding : 5px;
+}
+
+img {
+	border : none;
+}
+
+/** TABLES *******************************************/
+
+table#holidaymsgs {
+	font-size:1.0em;
+}
+tr.row-a {
+	background : #FFECE9;
+}
+
+tr.row-b {
+	background : #fff;
+}
+
+tr.tr-hol-head th {
+	border-bottom : solid #999 1px;
+	font-weight : normal;
+	font-size : 1.0em;
+	color : #000;
+	margin-bottom : 5px;
+}
+
+td.td-date {
+	width : 75px;
+}
+
+td.td-msg {
+	width : 510px;
+}
+
+td.td-button {
+	width : 45px;
+}
+
+/** FORMS *******************************************/
+#add_form,
+#edit_form {
+	margin:0px 0px 0px 0px;
+	padding:0px 0px 0px 0px;
+}
+
+#add_form .row,
+#edit_form .row {
+	margin-bottom: 0;
+	padding-top: 0.5em;
+	clear: left;
+	float: left;
+	width: 750px;
+	/*border : solid red 1px;*/
+}
+
+#add_form .row .label,
+#edit_form .row .label {
+	float: left;
+	margin-right: 15px;
+	padding-top: 0.1em;
+	width: 100px;
+	text-align: right;
+	font-weight: bold;
+	background: #fff; /* Without this Win IE puts extra space between rows. Weird. */
+}
+#add_form .row .field, 
+#edit_form .row .field {
+	float: left;
+	width: 600px;
+}
+
+#add_form .row .field input,
+#edit_form .row .field input {
+	font-size : 1.0em;
+	color : #000;
+}
+
+#add_form .row .field input.day-month,
+#edit_form .row .field input.day-month {
+	font-size : 1.0em;
+	color : #000;
+	width : 20px;
+}
+
+#add_form .row .field input.year, 
+#edit_form .row .field input.year {
+	font-size : 1.0em;
+	color : #000;
+	width : 35px;
+}
+
+.row .field input.number {
+	/* In addition to .text */
+	width: 50px;
+}
+
+.row .field textarea {
+	width: 445px;
+}
+
+img.calimg{
+	position:relative;
+	top:3px;
+}
+
+div.minsize{
+	min-height:200px;
+}
+span#notfound,
+span#deny {
+	font-size : 1.3em;
+	margin-top:50px;
+	color : #999;	
+	display:block;
+}
+
+/** Admin pages **/
+ul#subdir {
+	list-style:none;
+	margin-left:25px;
+	margin-bottom:25px;
+	padding:0px;
+}
+
+ul#subdir li {
+	display:inline;
+	margin-right:5px;
+}
+ul#subdir li a{
+	color:#9F4040;
+}
+
+h3.heading {
+	background : #9F4040;
+	color : #fff;
+	padding : 5px;
+	margin-left:25px;
+	width:740px;
+	font-size : 1.1em;
+}
+
+input.long {
+	width:300px;
+}
+	
+
+/** Admin user management **/
+
+form#edituserform,
+form#adduserform {
+	margin:0px;
+	padding:0px 0px 0px 50px;
+
+}
+
+#adduserform .row,
+#edituserform .row {
+	margin-bottom: 0;
+	padding-top: 0.5em;
+	clear: left;
+	float: left;
+	width: 750px;
+	/*border : solid red 1px;*/
+}
+
+#adduserform .row .label,
+#edituserform .row .label {
+	float: left;
+	margin-right: 15px;
+	padding-top: 0.1em;
+	width: 100px;
+	text-align: right;
+	font-weight: bold;
+	background: #fff; /* Without this Win IE puts extra space between rows. Weird. */
+}
+#adduserform .row .field, 
+#edituserform .row .field {
+	float: left;
+	width: 600px;
+}
+
+#adduserform .row .field input,
+#edituserform .row .field input {
+	font-size : 1.0em;
+	color : #000;
+}
+
+table#userlist {
+	width:750px;
+	margin-left:25px;
+	font-size:12px;
+}
+
+table#userlist th {
+	color:#B21818;
+	font-size:12px;
+}
+
+table#userlist .first {
+	padding-left:10px;
+}
+
+table#userlist .userid,
+table#userlist .fullname {
+	width:150px;
+	text-align:left;
+}
+
+table#userlist .domain {
+	width:150px;
+	text-align:left;
+}
+
+table#userlist .password {
+	width:100px;
+	text-align:left;
+}
+table#userlist .type {
+	width:50px;
+	text-align:left;
+}
+table#userlist .button {
+	width:50px;
+}
+
+span#password_span {
+	width:150px;
+}
+
+
+/* domain manage */
+form#adddomainform,
+form#editdomainform {
+	margin:0px;
+	padding:0px 0px 0px 50px;
+
+}
+#adddomainform .row,
+#editdomainform .row {
+	margin-bottom: 0;
+	padding-top: 0.5em;
+	clear: left;
+	float: left;
+	width: 750px;
+	/*border : solid red 1px;*/
+}
+
+#adddomainform .row .label,
+#editdomainform .row .label {
+	float: left;
+	margin-right: 15px;
+	padding-top: 0.1em;
+	width: 100px;
+	text-align: right;
+	font-weight: bold;
+	background: #fff; /* Without this Win IE puts extra space between rows. Weird. */
+}
+#adddomainform .row .field, 
+#editdomainform .row .field {
+	float: left;
+	width: 600px;
+}
+
+#adddomainform .row .field input,
+#editdomainform .row .field input {
+	font-size : 1.0em;
+	color : #000;
+}
+
+table#domainlist {
+	width:750px;
+	margin-left:25px;
+	font-size:12px;
+}
+
+table#domainlist th {
+	color:#B21818;
+	font-size:12px;
+}
+
+table#domainlist .first {
+	padding-left:10px;
+}
+
+table#domainlist .domain{
+	width:650px;
+	text-align:left;
+}
+
+table#domainlist .button {
+	width:50px;
+}
+
+span#hideerror,
+span#deleteerror {
+	font-weight : normal;
+	color : red;
+	font-size : 1.0em;
+	margin-left:35px;
+	margin-bottom:5px;
+	margin-top:5px;
+	display:block;
+}
+
+/* group manage */
+form#addgroupform,
+form#editgroupform {
+	margin:0px;
+	padding:0px ;
+
+}
+
+#addgroupform .row,
+#editgroupform .row {
+	margin-bottom: 0;
+	padding-top: 0.5em;
+	clear: left;
+	float: left;
+	width: 750px;
+	/*border : solid red 1px;*/
+}
+
+#addgroupform .row .label,
+#editgroupform .row .label {
+	float: left;
+	margin-right: 15px;
+	padding-top: 0.1em;
+	width: 150px;
+	text-align: right;
+	font-weight: bold;
+	background: #fff; /* Without this Win IE puts extra space between rows. Weird. */
+}
+#addgroupform .row .field, 
+#editgroupform .row .field {
+	float: left;
+	width: 550px;
+}
+
+#addgroupform .row .field input,
+#editgroupform .row .field input {
+	font-size : 1.0em;
+	color : #000;
+}
+
+
+table#grouplist {
+	width:750px;
+	margin-left:25px;
+	font-size:12px;
+}
+
+table#grouplist th {
+	color:#B21818;
+	font-size:12px;
+}
+
+table#grouplist .first {
+	padding-left:10px;
+}
+table#grouplist .groupname {
+	width:325px;
+	text-align:left;
+}
+
+table#grouplist .domain{
+	width:325px;
+	text-align:left;
+}
+
+table#grouplist .button {
+	width:50px;
+}
+
+ul.aliasusers {
+	list-style:none;
+	margin:0px;
+	padding:0px;
+}
+ul.aliasusers li{
+	display:inline;
+	margin-right:5px;
+	width:125px;
+	white-space:nowrap;
+	float:left;
+}
+.groupindent {
+	margin-left:50px;
+}
+
+span.nousers {
+	color:#aab;
+	font-style:italic;
+}
+
+/****** Pagination ******/
+a.pageselectors {
+	font-size:10px;
+}
+
+div.pages {
+	margin-top:10px;
+	padding-bottom:10px;
+	text-align: center;
+	width:100%;
+}
+
+div.pagertop {
+	margin-bottom:5px;
+}
+div.pagerbottom {
+	margin-top:5px;
+}
+div.pagertop,
+div.pagerbottom {
+	margin-left:35px;
+	margin-bottom:5px;
+}
+
+span#generator {
+	margin-left:10px;
+}
+
+.cpYearNavigation,
+.cpMonthNavigation { 
+	background-color:#9F4040; 
+	text-align:center; 
+	vertical-align:center; 
+	text-decoration:none; 
+	color:#000000; 
+	font-weight:bold; }
+
+.cpDayColumnHeader,
+.cpYearNavigation,
+.cpMonthNavigation,
+.cpCurrentMonthDate,
+.cpCurrentMonthDateDisabled,
+.cpOtherMonthDate,
+.cpOtherMonthDateDisabled,
+.cpCurrentDate,
+.cpCurrentDateDisabled,
+.cpTodayText,
+.cpTodayTextDisabled,
+.cpText { 
+	font-family:arial; 
+	font-size:8pt; 
+}
+TD.cpDayColumnHeader { 
+	text-align:right;
+ 	border:solid thin #C0C0C0;
+	border-width:0px 0px 1px 0px;
+ }
+
+.cpCurrentMonthDate,
+.cpOtherMonthDate,
+.cpCurrentDate  { 
+	text-align:right; 
+	text-decoration:none; 
+}
+.cpCurrentMonthDateDisabled,
+.cpOtherMonthDateDisabled,
+.cpCurrentDateDisabled { 
+	color:#D0D0D0;
+	text-align:right;
+	text-decoration:line-through;
+ }
+
+.cpCurrentMonthDate, 
+.cpCurrentDate { 
+	color:#000000; 
+}
+.cpOtherMonthDate { color:#808080; }
+TD.cpCurrentDate { 
+	color:white;
+	 background-color: #C0C0C0;
+ 	border-width:1px;
+ 	border:solid thin #800000;
+ }
+
+TD.cpCurrentDateDisabled {
+	 border-width:1px; 
+	border:solid thin #FFAAAA; 
+}
+TD.cpTodayText, TD.cpTodayTextDisabled { 
+	border:solid thin #C0C0C0; 
+	border-width:1px 0px 0px 0px;
+}
+A.cpTodayText, 
+SPAN.cpTodayTextDisabled { height:20px; }
+A.cpTodayText { color:black; }
+.cpTodayTextDisabled { color:#D0D0D0; }
+.cpBorder { border:solid thin #9F4040; }
+
+div#startcal,
+div#endcal{
+	position:absolute;
+	background:white;
+	margin-top:-5px;
+}
+
+
+

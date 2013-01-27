@@ -1,0 +1,9 @@
+### mainn/ 025_exim4-config_ww_main
+#...
+
+# Database
+hide pgsql_servers = localhost/clwmail/<dbname>/<password>
+
+#...
+
+

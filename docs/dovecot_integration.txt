@@ -1,0 +1,7 @@
+Dovecot integration
+===================
+
+The IMAP/Dovecot server can easily be integrated into CLWMail through
+SQL calls.
+
+A simple sample integration file is included in ../clwmail/dovecot/

@@ -1,0 +1,101 @@
+README
+======
+
+Updated 26 January 2013
+Rory Campbell-Lange
+
+This README covers setup of the database and Django web service.
+
+DB setup
+--------
+
+For a working copy of a CLWMail database, create a CLWMail user in
+Postgres and then create a CLWMail database with the clmail user as the
+owner.
+
+e.g.
+
+	template1=# create user clwmail password '<password>'; 
+	CREATE ROLE
+	template1=# create database clwmail owner clwmail;
+	CREATE DATABASE
+
+You may need to alter the postgresql configuration file pg_hba.conf file
+to allow the clwmail user to connect.
+
+Then log into the CLWMail database as the clwmail user, and run the
+following commands in order from the utils directory:
+
+	-- load the db schema
+	clwmail=> \i schema.sql 
+
+	-- load the sql types
+	clwmail=> \i type_loader.sql
+
+	-- load the sql functions
+	clwmail=> \i function_loader.sql
+
+Then make an admin user.
+
+	clwmail=> insert into domains (domain) values ('example.com');
+
+Then edit the admin_creator.sql script and run it
+
+	clwmail=> \i admin_creator.sql
+
+If you are using SOGo with CLWMail you need to load the SOGo view.
+
+
+You will also need to make a first user for the system to load, due an
+SQL bug for an empty listing. Do something along the following lines
+
+=> insert into users 
+   values ('user1', now(), 'user1', '/var/mail/user1', 'example.com', 1000, 1000);
+
+
+Django setup
+------------
+
+The web service is rooted in clwmail/clwmail. The main file that
+requires editing is settings.py. The INSTALL_ROOT must point to clwmail,
+not clwmail/clwmail because of the way Django deals with import paths.
+
+The other settings to edit are the DATABASE settings. Ensure that these
+accord not only with the details given above, but that the pg_hba.conf
+file gives the given user access to the CLWMail database over either
+domain sockets or TCP/IP as required (domain sockets are standard if
+the web service is running on the same machine as the database).
+
+To test the service after configuration, simply execute 
+
+	./manage.py runserver
+
+in the clwmail/clwmail directory. This will run the testing server,
+which should make CLWMail operable at 127.0.0.1:8000 (depending on the
+options given to the manage.py script).
+
+Once this is operating correctly it is then usual practice to serve the
+Django application through a more formal web server, such as Apache.
+
+Here is part of an Apache configuration, pointing to a particular wsgi
+configuration file (http://wsgi.readthedocs.org/en/latest/what.html)
+which may be suitable for this purpose:
+
+	# WSGIDaemonProcess clwmail threads=15 maximum-requests=2000
+    # WSGIProcessGroup clwmail
+    WSGIScriptAlias /clwmail /var/www/clwmail/wsgi/clwmail.wsgi
+    <Directory /clwmail /var/www/clwmail/wsgi/>
+        Order allow,deny
+        Allow from all
+    </Directory>
+
+In this case the wsgi file at clwmail.wsgi may look something like this:
+
+	import os, sys
+	sys.path = ['/var/www/clwmail/'] + sys.path
+	os.environ['DJANGO_SETTINGS_MODULE'] = 'rotamc.settings'
+		
+	import django.core.handlers.wsgi
+
+	application = django.core.handlers.wsgi.WSGIHandler()
+

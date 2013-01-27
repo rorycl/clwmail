@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load modulo %}
+{% block pagetitle %}CLW Mail Admin{% endblock %}
+{% block js %}{% endblock %}
+{% block content %}
+
+	<h1>CLWMail - Mail System</h1>
+
+	<ul id ="subdir">
+		{% ifequal page 'umanage' %} <li class="current" >User Management</li>&nbsp;|&nbsp;
+		{% else %} <li><a href ="{{ urlrel }}admin/user/manage/">User Management</a></li>&nbsp;|&nbsp;
+		{% endifequal %}
+
+		{% ifequal page 'gmanage' %}
+			<li class="current">Group Management</li>&nbsp;|&nbsp;
+		{% else %}
+			<li><a href ="{{ urlrel }}admin/group/manage/">Group Management</a></li>&nbsp;|&nbsp;
+		{% endifequal %}
+			
+		{% ifequal page 'dmanage' %}
+			<li class="current">Domain Management</li>&nbsp;|&nbsp;
+		{% else %}
+			<li><a href ="{{ urlrel }}admin/domain/manage/">Domain Management</a></li>&nbsp;|&nbsp;
+		{% endifequal %}
+
+		<li><a href="{{ urlrel }}auth/logout/">Logout</a></li>
+	</ul>
+
+	{% block contentbody %}
+	{% endblock %}
+{% endblock %}

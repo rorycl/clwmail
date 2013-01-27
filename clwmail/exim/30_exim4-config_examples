@@ -1,0 +1,13 @@
+### auth/30_exim4-config_examples
+#################################
+
+#...
+
+# Here is an example of CRAM-MD5 authentication against PostgreSQL:
+#
+# psqldb_auth_server:
+#   driver = cram_md5
+#   public_name = CRAM-MD5
+#   server_secret = ${lookup pgsql{SELECT pw FROM users WHERE username = '${quote_pgsql:$auth1}'}{$value}fail}
+#   server_set_id = $auth1
+

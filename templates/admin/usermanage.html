@@ -1,0 +1,499 @@
+{% extends thistemplate %}
+{% load modulo %}
+{% load range %}
+{% block pagetitle %}CLW Mail User Manage{% endblock %}
+{% block js %}{% endblock %}
+{% block contentbody %}
+	{% ifequal mode 'add' %}
+		<h3 class ="heading">Add a user</h3>
+
+		<form id="adduserform" name="add-user" action="{{ urlrel }}admin/user/add/" method="post">
+
+			{% if form.errors or dberror or form.extras %}
+				<div class="row">
+					{% if form.errors  or from.extras %}
+						<span class="error">Errors have occurred. Please see below.</span>
+					{% else %}
+						<span class="error">{{ dberror }}</span>
+					{% endif %}
+				</div>
+			{% endif %}
+
+			{% if form.fullname.errors %}
+				<div class="row">
+					<span class="label">
+						&nbsp; 
+					</span>
+					<span class="field">
+						{{ form.fullname.errors }}
+					</span>
+				</div>
+			{% endif %}
+			 
+			<div class="row">
+				<span class="label">
+					full name 
+				</span>
+				<span class="field">
+					<input class="long"  type="text"  name="fullname" value="{% if new_data.fullname  %}{{ new_data.fullname }}{% endif%}"/>
+				</span>
+			</div>
+
+			{% if form.userid.errors or form.extras.userid %}
+				<div class="row">
+					<span class="label">
+						&nbsp; 
+					</span>
+					{% if form.userid.errors %}
+						<span class="field">
+							{{ form.userid.errors }}
+						</span>
+					{% else %}
+						<span class="field">
+							{{ form.extras.userid }}
+						</span>
+					{% endif %}
+				</div>
+			{% endif %}
+			 
+			<div class="row">
+				<span class="label">
+					userid 
+				</span>
+				<span class="field">
+					<input class="long"   type="text"  name="userid" value="{% if new_data.userid  %}{{ new_data.userid }}{% endif%}"/>
+				</span>
+			</div>
+
+			{% if form.domain.errors %}
+				<div class="row">
+					<span class="label">
+						&nbsp; 
+					</span>
+					<span class="field">
+						{{ form.domain.errors }}
+					</span>
+				</div>
+			{% endif %}
+			 
+			<div class="row">
+				<span class="label">
+					domain 
+				</span>
+				<span class="field">
+					<select name="domain">	
+						{% for domain in domains %}
+							{% ifequal new_data.domain domain.domainname %}
+								<option selected="selected" value="{{ domain.domainname }}">{{ domain.domainname }}</option>
+							{% else %}
+								<option value="{{ domain.domainname }}">{{ domain.domainname }}</option>
+							{% endifequal %}
+						{% endfor %}
+					</select>
+				</span>
+			</div>
+
+			{% if form.password.errors %}
+				<div class="row">
+					<span class="label">
+						&nbsp; 
+					</span>
+					<span class="field">
+						{{ form.password.errors }}
+					</span>
+				</div>
+			{% endif %}
+		
+			<div class="row">
+				<span class="label">
+					password 
+				</span>
+				<span class="field">
+					<span id="password_span">{% if new_data.password %}{{ new_data.password }}{% else %}{{ gen_pass }}{% endif %}</span>
+					<input type="hidden" id="password_form" name="password" value="{% if new_data.password %}{{ new_data.password }}{% else %}{{ gen_pass }}{% endif %}" />
+					<span id="generator">
+						<a href="javascript:void 0" onclick="javascript:genPassword('password')">[re-generate]</a>
+					</span>
+				</span>
+			</div>
+
+			{% if form.type.errors %}
+				<div class="row">
+					<span class="label">
+						&nbsp; 
+					</span>
+					<span class="field">
+						{{ form.type.errors }}
+					</span>
+				</div>
+			{% endif %}
+			 
+			<div class="row">
+				<span class="label">
+					type 
+				</span>
+				<span class="field">
+					<select name="typer">	
+						{% for typer in types %}
+							{% ifequal new_data.typer typer %}
+								<option selected="selected" value="{{ typer }}">{{ typer|capfirst }}</option>
+							{% else %}
+								<option value="{{ typer }}">{{ typer|capfirst }}</option>
+							{% endifequal %}
+						{% endfor %}
+					</select>
+				</span>
+			</div>
+
+			{% if form.role.errors %}
+				<div class="row">
+					<span class="label">
+						&nbsp; 
+					</span>
+					<span class="field">
+						{{ form.role.errors }}
+					</span>
+				</div>
+			{% endif %}
+		
+			<div class="row">
+				<span class="label">
+					role 
+				</span>
+				<span class="field">
+					<input type="text" name="role" value="{% if new_data.role %}{{ new_data.role }}{% endif %}" />
+				</span>
+			</div>
+
+			{% if form.notes.errors %}
+				<div class="row">
+					<span class="label">
+						&nbsp; 
+					</span>
+					<span class="field">
+						{{ form.notes.errors }}
+					</span>
+				</div>
+			{% endif %}
+			 
+			<div class="row">
+				<span class="label">
+					notes 
+				</span>
+				<span class="field">
+					<textarea cols="50" rows="9" name="notes">{% if new_data.notes  %}{{ new_data.notes }}{% endif %}</textarea>
+				</span>
+			</div>
+
+			<div class="row">
+				<span class="label">
+					&nbsp; 
+				</span>
+				<span class="field">
+					<input type="image" src="{{ urlmedia }}images/save.png" alt="save"/>
+				</span>
+			</div>
+		
+			<div class="clear"></div>
+	</form>
+
+	{% else %}
+		{% ifequal mode 'edit' %}
+			<h3 class="heading">Edit {{ requestuser.fullname }}</h3>
+			<form id="edituserform" name="edit-user" action="{{ urlrel }}admin/user/{{ requestuser.userid }}/domain/{{ requestuser.domain }}/edit/" method="post">
+
+				{% if form.errors or dberror or form.extras %}
+					<div class="row">
+						{% if form.errors or form.extras %}
+							<span class="error">Errors have occurred. Please see below.</span>
+						{% else %}
+							<span class="error">{{ dberror }}</span>
+						{% endif %}
+					</div>
+				{% endif %}
+
+				{% if form.fullname.errors %}
+					<div class="row">
+						<span class="label">
+							&nbsp; 
+						</span>
+						<span class="field">
+							{{ form.fullname.errors }}
+						</span>
+					</div>
+				{% endif %}
+				 
+				<div class="row">
+					<span class="label">
+						full name 
+					</span>
+					<span class="field">
+						<input class="long"  type="text"  name="fullname" value="{% if new_data  %}{{ new_data.fullname }}{% else %}{{ requestuser.fullname }}{% endif%}"/>
+					</span>
+				</div>
+
+				{% if form.userid.errors or form.extras.userid %}
+					<div class="row">
+						<span class="label">
+							&nbsp; 
+						</span>
+						{% if form.userid.errors %}
+							<span class="field">
+								{{ form.userid.errors }}
+							</span>
+						{% else %}
+							<span class="field">
+								{{ form.extras.userid }}
+							</span>
+						{% endif %}
+					</div>
+				{% endif %}
+				 
+				<div class="row">
+					<span class="label">
+						userid 
+					</span>
+					<span class="field">
+						{{ requestuser.userid }}
+						<input type="hidden" value="{{ requestuser.userid }}" name="userid"/>
+					</span>
+				</div>
+
+				<div class="row">
+					<span class="label">
+						domain 
+					</span>
+					<span class="field">
+						{{ requestuser.domain }}
+						<input type="hidden" value="{{ requestuser.domain }}" name="domain"/>
+					</span>
+				</div>
+
+				{% if form.password.errors %}
+					<div class="row">
+						<span class="label">
+							&nbsp; 
+						</span>
+						<span class="field">
+							{{ form.password.errors }}
+						</span>
+					</div>
+				{% endif %}
+			
+				<div class="row">
+					<span class="label">
+						password 
+					</span>
+					<span class="field">
+						<span id="password_span">{% if new_data.password %}{{ new_data.password }}{% else %}{{ requestuser.password }}{% endif %}</span>
+						<input type="hidden" id="password_form" name="password" value="{% if new_data.password %}{{ new_data.password }}{% else %}{{ requestuser.password }}{% endif %}" />
+						<span id="generator">
+							<a href="javascript:void 0" onclick="javascript:genPassword('password')">[re-generate]</a>
+						</span>
+					</span>
+				</div>
+
+				{% if form.type.errors %}
+					<div class="row">
+						<span class="label">
+							&nbsp; 
+						</span>
+						<span class="field">
+							{{ form.type.errors }}
+						</span>
+					</div>
+				{% endif %}
+				 
+				<div class="row">
+					<span class="label">
+						type 
+					</span>
+					<span class="field">
+						<select name="typer">	
+							{% for type in types %}
+								{% if new_data %}
+									{% ifequal new_data.typer type %}
+										<option selected="selected" value="{{ type }}">{{ type|capfirst }}</option>
+									{% else %}
+										<option value="{{ type }}">{{ type|capfirst }}</option>
+									{% endifequal %}
+								{% else %}
+									{% ifequal requestuser.typer.lower type %}
+										<option selected="selected" value="{{ type }}">{{ type|capfirst }}</option>
+									{% else %}
+										<option value="{{ type }}">{{ type|capfirst }}</option>
+									{% endifequal %}
+								{% endif %}
+							{% endfor %}
+						</select>
+					</span>
+				</div>
+
+				{% if form.role.errors %}
+					<div class="row">
+						<span class="label">
+							&nbsp; 
+						</span>
+						<span class="field">
+							{{ form.role.errors }}
+						</span>
+					</div>
+				{% endif %}
+			
+				<div class="row">
+					<span class="label">
+						role 
+					</span>
+					<span class="field">
+						<input type="text" name="role" value="{% if new_data %}{{ new_data.role }}{% else %}{{ requestuser.role|default_if_none:"" }}{% endif %}" />
+					</span>
+				</div>
+
+				{% if form.notes.errors %}
+					<div class="row">
+						<span class="label">
+							&nbsp; 
+						</span>
+						<span class="field">
+							{{ form.notes.errors }}
+						</span>
+					</div>
+				{% endif %}
+				 
+				<div class="row">
+					<span class="label">
+						notes 
+					</span>
+					<span class="field">
+						<textarea cols="50" rows="9" name="notes">{% if new_data  %}{{ new_data.notes }}{% else %}{{ requestuser.notes|default_if_none:"" }}{% endif %}</textarea>
+					</span>
+				</div>
+
+				<div class="row">
+					<span class="label">
+						&nbsp; 
+					</span>
+					<span class="field">
+						<input type="image" src="{{ urlmedia }}images/save.png" alt="save"/>
+					</span>
+				</div>
+			
+				<div class="clear"></div>
+		</form>
+
+		{% endifequal %}
+	{% endifequal %}
+
+	{% if users %}
+		<h3 class="heading">Current Users</h3>
+
+		<div class="pagertop">
+				{% if collection.has_prev %}
+					<a class="pageselectors" href="{{ urlrel }}admin/user/manage/page/{{ collection.prev_page }}/" >&laquo</a> 
+				{% endif %}
+					Page {{ collection.current_page }} of {{ collection.num_pages }}
+				{% if collection.has_next %}
+					<a class="pageselectors" href="{{ urlrel }}admin/user/manage/page/{{ collection.next_page }}/">&raquo</a>
+				{% endif %}
+		</div>
+
+		{% if hideerror %}
+			<span id="hideerror">{{ hideerror }}</span>
+		{% endif %}
+
+		<table id="userlist" cellspacing="0">
+			<thead>
+				<tr>
+					<th class="first fullname">Name</th>
+					<th class="userid">userid</th>
+					<th class="domain">Domain</th>
+					<th class="password">Password</th>
+					<th class="type">Type</th>
+					<th class="button">&nbsp;</th>
+					<th class="button">&nbsp;</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for user in users %}
+					<tr class="{% if forloop.counter|modulo:2 %}row-a{% else %}row-b{% endif %}">
+						
+					    {% ifequal user.status 9 %}
+							<td class="first fullname">
+								{{ user.fullname }}	
+							</td>
+					    {% else %}
+							<td class="first fullname">
+								<a href="{{ urlrel }}mailstore/user/{{ user.userid }}/domain/{{ user.domain }}/holiday/">
+									{{ user.fullname }}
+								</a>
+							</td>
+						{% endifequal %}
+
+
+						<td class="userid">
+							{{ user.userid }}	
+						</td>
+
+						<td class="domain">
+							{{ user.domain }}	
+						</td>
+
+						<td class="password">
+							{{ user.password }}	
+						</td>
+
+
+						<td class="type">
+							{{ user.typer }}	
+						</td>
+
+						<td class="button">
+							<a href="{{ urlrel }}admin/user/{{ user.userid }}/domain/{{ user.domain }}/edit/">
+								<img src="{{ urlmedia }}images/edit.png" alt="edit"/>
+							</a>
+						</td>
+							{% ifnotequal user.status 9 %}
+								<td class="button">
+									<a href="{{ urlrel }}admin/user/{{ user.userid }}/domain/{{ user.domain }}/hide/">
+										<img onClick="return confirmAction('disable','user');" src="{{ urlmedia }}images/hide.png" alt="edit"/>
+									</a>
+								</td>
+							{% else %}
+								<td class="button">
+									<a href="{{ urlrel }}admin/user/{{ user.userid }}/domain/{{ user.domain }}/unhide/">
+										<img onClick="return confirmAction('enable','user');" src="{{ urlmedia }}images/unhide.png" alt="edit"/>
+									</a>
+								</td>
+							{% endifnotequal %}
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<div class="pagerbottom" style="{% if collection.bottom_pager %}display:block;{% else %}display:none;{% endif %}" >
+			{% if collection.has_prev %}
+				<a class="pageselectors" href="{{ urlrel }}admin/user/manage/page/{{ collection.prev_page }}/" >&laquo</a> 
+			{% endif %}
+				Page {{ collection.current_page }} of {{ collection.num_pages }}
+			{% if collection.has_next %}
+				<a class="pageselectors" href="{{ urlrel }}admin/user/manage/page/{{ collection.next_page }}/">&raquo</a>
+			{% endif %}
+		</div>
+
+		<div class="pages"> 
+			{% for page in collection.page_range %}
+				{% ifequal page collection.current_page %}
+					<span class="current-page">{{ page }}</span>
+				{% else %}
+					<a href="{{ urlrel }}admin/user/manage/page/{{ page }}/">{{ page }}</a>
+				{% endifequal %}
+			{% endfor %}
+		</div>
+		<div class="clear"></div>
+				
+{% endif %}
+	
+		
+	
+
+{% endblock %}

@@ -1,0 +1,41 @@
+
+## below are templates for the Exim4 mail daemon Router's, these templates need
+## to be modified for each installation. 
+### Started by Rory Sun Oct 30 14:50:44 GMT 2005
+#################################
+
+T_CLW_ALIASES:
+  debug_print = "R: clwuser alias for $local_part@$domain"
+  driver = redirect
+  domains = +local_domains
+  allow_fail
+  allow_defer
+  data = ${lookup pgsql \
+        {SELECT * FROM fn_mail_alias_resolve ('${quote_pgsql:$local_part}', '${quote_pgsql:$domain}')}}
+
+T_CLW_LEAVER:
+  driver = accept
+  domains = +local_domains
+  debug_print = "R: clwuser leaver for $local_part@$domain"
+  local_parts = ${lookup pgsql \
+        {SELECT * FROM fn_mail_user_get_leaver ('${quote_pgsql:$local_part}', '${quote_pgsql:$domain}')}}
+  transport = LOCAL_CLW_LEAVER
+  # note, not unseen
+
+T_CLW_OUT_OF_OFFICE:
+  driver = accept
+  domains = +local_domains
+  debug_print = "R: clwuser vacation for $local_part@$domain"
+  local_parts = ${lookup pgsql \
+        {SELECT * FROM fn_mail_user_get_holiday ('${quote_pgsql:$local_part}', '${quote_pgsql:$domain}')}}
+  transport = LOCAL_CLW_VACATION
+  unseen
+
+T_CLW_LOCAL_USER:
+  debug_print = "R: config clwuser local_user for $local_part@$domain"
+  driver = accept
+  domains = +local_domains
+  local_parts = ${lookup pgsql \
+   		{SELECT * FROM fn_mail_user_get_active ('${quote_pgsql:$local_part}', '${quote_pgsql:$domain}')}}
+  transport = LOCAL_CLW_DELIVERY
+

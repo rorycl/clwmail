@@ -1,0 +1,12 @@
+# 40_exim4-config_clw
+
+#psql_login:
+#        driver = plaintext
+#        public_name = LOGIN
+#        server_prompts = User Name : Password
+#        server_condition =  \
+#		${if and {{eq{$1}${lookup pgsql \
+#		{SELECT userid FROM users where userid = '${quote_pgsql:$1}'}}}{eq{$2}${lookup pgsql \
+#		{SELECT password FROM users where password = '${quote_pgsql:$2}'}}}}{yes}{no}}
+#        server_set_id = $1
+

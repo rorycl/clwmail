@@ -1,0 +1,69 @@
+
+## below are templates for the Exim4 mail daemon Transport's, these
+## templates need to be modified for each installation. 
+### Started by Rory on Sun Oct 30 14:56:13 GMT 2005
+#################################
+
+LOCAL_CLW_LEAVER:
+    debug_print = "T: local clw leaver"
+    driver = autoreply
+    to = $sender_address
+    from = ${local_part}@${domain}
+    subject = "Re : ${rfc2047:$h_Subject:}"
+    once = CLW_VACDBM_DIR${local_part}
+    once_repeat = 1d
+    text = ${lookup pgsql \
+        {SELECT * FROM fn_mail_leaver_message ('${quote_pgsql:$local_part}', '${quote_pgsql:$domain}')}}
+    user = mailusers
+
+LOCAL_CLW_VACATION:
+    debug_print = "T: local clw vacation"
+    driver = autoreply
+    to = $sender_address
+    from = ${local_part}@${domain}
+    subject = "Re : ${rfc2047:$h_Subject:}"
+    once = CLW_VACDBM_DIR${local_part}
+    once_repeat = 3d
+    text = ${lookup pgsql \
+        {SELECT * FROM fn_mail_holiday_message ('${quote_pgsql:$local_part}', '${quote_pgsql:$domain}')}}
+    user = mailusers
+
+LOCAL_CLW_DELIVERY:
+    debug_print = "T: local clw delivery"
+    driver = appendfile
+    user = mailusers
+    group = mailusers
+    mode = 0660
+    envelope_to_add = true
+    directory = CLW_MAIN_HOMEDIR${local_part}/Maildir/
+    maildir_format
+    maildir_tag = $message_id
+
+FALLTHRU_CLW_DELIVERY:
+    debug_print = "T: fallthrough clw delivery"
+    driver = appendfile
+    user = mailusers
+    group = mailusers
+    mode = 0660
+    envelope_to_add = true
+    directory = CLW_SMART_HOMEDIR
+    maildir_format
+    maildir_tag = $message_id
+
+SHADOW_CLW_DELIVERY:
+    debug_print = "T: shadow_delivery"
+    driver = appendfile
+    group = mailusers
+    user = mailusers
+    mode = 0660
+    envelope_to_add = true
+    directory = CLW_SHADOWDIR
+    maildir_format
+    maildir_tag = $message_id
+
+SYSTEM_CLW_PIPE_TRANSPORT:
+    debug_print = "T: fallthrough clw delivery"
+    driver = pipe
+    user = mailusers
+    group = mailusers
+

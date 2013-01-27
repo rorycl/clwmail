@@ -1,0 +1,38 @@
+README
+======
+
+For a working copy of a clwmail database, create a clwmail user in
+Postgres and then create a clwmail database with the clmail user as the
+owner.
+
+e.g.
+
+	template1=# create user clwmail password 'iK5Ienge';
+	CREATE ROLE
+	template1=# create database clwmail owner clwmail;
+	CREATE DATABASE
+
+You may need to alter the postgresql configuration file pg_hba.conf file
+to allow the clwmail user to connect.
+
+Then log into the clwmail database as the clwmail user, and run the
+following commands in order:
+
+	-- load the db schema
+	clwmail=> \i schema.sql 
+
+	-- load the sql types
+	clwmail=> \i type_loader.sql
+
+	-- load the sql functions
+	clwmail=> \i function_loader.sql
+
+Then make an admin user.
+
+	clwmail=> insert into domains (domain) values ('example.com');
+
+Then edit the admin_creator.sql script and run it
+
+	clwmail=> \i admin_creator.sql
+
+If you are using SOGo with clwmail you need to load the SOGo view.

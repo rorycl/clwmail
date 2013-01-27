@@ -1,0 +1,21 @@
+{% extends thistemplate %}
+{% block pagetitle %}CLW Mail Deny{% endblock %}
+{% block content %}
+<h1>CLWMail - Mail System</h1>
+
+
+<div id="content">
+	<div class ="minsize">
+		<span id ="deny">
+			You do not have permissions to view this {{ item }}.
+			{% if session_user.is_authenticated %}
+				Please click <a href ="{{ urlrel }}mailstore/user/{{ session_user.username }}/domain/{{ session_user.domain }}/holiday/">here</a> to return to your home page.
+			{% else %}
+				Please click <a href ="{{ urlrel }}auth/login/">here</a> to login.
+			{% endif %}
+
+		</span>
+	</div>
+</div>
+
+{% endblock %}
