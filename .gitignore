@@ -1,0 +1,6 @@
+# CLWMail gitignore
+
+.DS_Store
+*pyc
+*swo
+*swp
