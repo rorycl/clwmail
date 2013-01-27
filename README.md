@@ -10,6 +10,19 @@ CLWMail was developed by Campbell-Lange Workshop Ltd.
 CLWMail has been in use since about 2006 and has been open sourced with
 the support of Hopkins Architects.
 
+## Documents
+
+The `docs` folder has some material to help in understanding and setting
+up CLWMail:
+
+* README
+  General README and instructions on how to setup the database and web
+  application
+* Screenshots : the login, users and groups pages (login.png, users.png,
+  groups.png) of the Django webapp
+* Integration notes for Dovecot (`dovecot_integration.txt`), Exim
+  (`exim_integration.txt`) and SOGo (`sogo_integration.txt`).
+
 ## Improvements
 
 CLWMail works for its current target services (Exim, Dovecot and SOGo)
